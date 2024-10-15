@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSS Feeds</title>
+  </head>
+  <body>
+    <form id="main-form">
+      <label for="rss-feed">RSS Feed</label>
+      <input type="url" name="rss-feed" id="rss-feed" />
+      <button type="submit">Add</button>
+    </form>
+    <script>
+      let form = document.getElementById("main-form");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let values = new FormData(form);
+        values.forEach(function (val, key) {
+          console.log("values", val, "key", key);
+        });
+      });
+    </script>
+  </body>
+</html>
