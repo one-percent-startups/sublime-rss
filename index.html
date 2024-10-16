@@ -4,22 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RSS Feeds</title>
+    <style>
+      .red {
+        color: maroon;
+      }
+      .green {
+        color: green;
+      }
+    </style>
   </head>
   <body>
     <form id="main-form">
-      <label for="rss-feed">RSS Feed</label>
-      <input type="url" name="rss-feed" id="rss-feed" />
+      <label for="rss_feed_urls">RSS Feed</label>
+      <input required type="url" name="rss_feed_urls" id="rss_feed_urls" />
       <button type="submit">Add</button>
     </form>
+    <span id="result-label"></span>
     <script>
+      let result = document.getElementById("result-label");
       let form = document.getElementById("main-form");
       form.addEventListener("submit", function (e) {
+        result.textContent = "Sending...";
         e.preventDefault();
         e.stopPropagation();
         let values = new FormData(form);
+        let payload = {};
         values.forEach(function (val, key) {
-          console.log("values", val, "key", key);
+          if (key == "rss_feed_urls") payload[key] = [val];
+          else payload[key] = val;
         });
+        var xhr = new XMLHttpRequest();
+        var url = "http://media.rev.vet:52005/index";
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 201) {
+              // Success here
+              result.textContent = "Sent.";
+              result.classList.add("green");
+            } else {
+              // Error out here
+              result.textContent = "Error";
+              result.classList.add("red");
+            }
+            // Timeout here to reset
+            setTimeout(() => {
+              result.textContent = "";
+              result.classList.remove("red", "green");
+            }, 2000);
+          }
+        };
+
+        xhr.send();
       });
     </script>
   </body>
