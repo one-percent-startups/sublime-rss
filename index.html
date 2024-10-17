@@ -41,7 +41,7 @@
 
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
-            if (xhr.status === 201) {
+            if (xhr.status === 200) {
               // Success here
               result.textContent = "Sent.";
               result.classList.add("green");
